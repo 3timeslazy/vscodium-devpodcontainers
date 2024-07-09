@@ -1,5 +1,12 @@
 import * as vscode from 'vscode';
-import { upDevpod, listDevpods } from './devpod';
+import { upDevpod, listDevpods } from './devpod/commands';
+import { devpodBinExists, installDevpod } from './devpod/bin'
+
+// TODO: add open-remote-ssh as a dependency
+// TODO: check devpod binary
+// TODO: customisations
+// TODO: hosttree for devpods
+// TODO: check podman and add podman provider
 
 export async function activate(context: vscode.ExtensionContext) {
 
@@ -54,6 +61,11 @@ async function openContainer() {
 	const containerFiles = await vscode.workspace.findFiles(".devcontainer/**/devcontainer.json");
 	if (containerFiles.length === 0) {
 		vscode.window.showInformationMessage('No devcontainer files found.');
+		return;
+	}
+	if (!devpodBinExists()) {
+		await installDevpod();
+		// TODO: delete the return once installDevpod is implemented
 		return;
 	}
 
