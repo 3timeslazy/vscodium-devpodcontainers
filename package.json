@@ -6,6 +6,7 @@
   "engines": {
     "vscode": "^1.90.2"
   },
+  "license": "SEE LICENSE IN LICENSE",
   "categories": [
     "Other"
   ],
@@ -23,6 +24,9 @@
     "docker",
     "containers"
 	],
+  "extensionDependencies": [
+    "jeanp413.open-remote-ssh"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [

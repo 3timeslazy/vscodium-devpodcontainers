@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { upDevpod, listDevpods } from './devpod/commands';
 import { devpodBinExists, installDevpod } from './devpod/bin'
 
-// TODO: add open-remote-ssh as a dependency
 // TODO: check devpod binary
 // TODO: customisations
 // TODO: hosttree for devpods
