@@ -1,27 +1,18 @@
 import * as vscode from 'vscode';
 import { upDevpod, listDevpods } from './devpod/commands';
-import { devpodBinExists, installDevpod } from './devpod/bin'
+import { devpodBinExists, installDevpod } from './devpod/bin';
+import * as jsonc from 'jsonc-parser';
+import { installCodeServer } from './vscodium/server';
+import { readFileSync } from 'fs';
 
+// TODO: not fail when open vsx in not available
 // TODO: check devpod binary
-// TODO: customisations
 // TODO: hosttree for devpods
 // TODO: check podman and add podman provider
 
 export async function activate(context: vscode.ExtensionContext) {
 
 	initial();
-
-	const xfn = vscode.commands.registerCommand('vscodium-podcontainers.test', async () => {
-		const list = await listDevpods();
-		const workspace = vscode.workspace.workspaceFolders?.at(0);
-		if (!workspace) {
-			vscode.window.showInformationMessage('Not found');
-			return;
-		}
-		const x = list.find((item) => item.source.localFolder === workspace.uri.path);
-		vscode.window.showInformationMessage(JSON.stringify({ x: x }));
-	});
-	context.subscriptions.push(xfn);
 
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'vscodium-podcontainers.open',
@@ -37,23 +28,22 @@ async function initial() {
 
 	const reopen = { title: 'Reopen in Container' };
 	const neverAgain = { title: "Don't Show Again" };
-	vscode.window.showInformationMessage(
+	const action = await vscode.window.showInformationMessage(
 		'A devcontainers file found. Reopen in a container?',
 		reopen,
 		neverAgain,
-	).then(async (action) => {
-		switch (action) {
-			case reopen: {
-				openContainer();
-				break;
-			}
-
-			// TODO: implement 'Never Again' button
-			case neverAgain:
-				vscode.window.showInformationMessage("Sorry, but that button is not yet implemented :)");
-				break;
+	);
+	switch (action) {
+		case reopen: {
+			openContainer();
+			break;
 		}
-	});
+
+		// TODO: implement 'Never Again' button
+		case neverAgain:
+			vscode.window.showInformationMessage("Sorry, but that button is not yet implemented :)");
+			break;
+	}
 }
 
 async function openContainer() {
@@ -112,12 +102,32 @@ async function openContainer() {
 		return;
 	}
 
+	// Unfortunately, we have to inject the codium server outselves because
+	// DevPod does not support it (yet).
+	// 
+	// TODO: show message to users or log the script's output into the output channel
+	await injectCodiumServer(devpod.id, pick.path);
+
 	const devpodUri = vscode.Uri.from({
 		scheme: 'vscode-remote',
 		authority: `ssh-remote+vscode@${devpod.id}.devpod`,
 		path: `/workspaces/${devpod.id}`,
 	});
 	vscode.commands.executeCommand('vscode.openFolder', devpodUri);
+}
+
+async function injectCodiumServer(devpodId: string, devcontainerJson: string) {
+	type DevContainerSpec = {
+		customizations?: {
+			vscodium?: {
+				extensions?: string[];
+			}
+		}
+	};
+	const specFile = readFileSync(devcontainerJson, { encoding: 'utf-8' });
+	const spec = jsonc.parse(specFile) as DevContainerSpec;
+	const extensions = spec.customizations?.vscodium?.extensions || [];
+	await installCodeServer(`${devpodId}.devpod`, extensions);
 }
 
 export function deactivate() { }

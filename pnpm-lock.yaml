@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@devcontainers/cli':
-        specifier: ^0.65.0
-        version: 0.65.0
+      jsonc-parser:
+        specifier: ^3.3.1
+        version: 3.3.1
     devDependencies:
       '@types/mocha':
         specifier: ^10.0.7
@@ -50,11 +50,6 @@ packages:
 
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
-
-  '@devcontainers/cli@0.65.0':
-    resolution: {integrity: sha512-7XPchw31GMKdZ90l0Vsap+MouD4fy0Da7jyW97A2pBDnXnpOAxm7lj2s/2ivbYzO9J1FVecPaDe9ZloriliTcw==}
-    engines: {node: ^16.13.0 || >=18.0.0}
-    hasBin: true
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -1000,6 +995,9 @@ packages:
   json-stable-stringify-without-jsonify@1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
 
+  jsonc-parser@3.3.1:
+    resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
+
   jszip@3.10.1:
     resolution: {integrity: sha512-xXDvecyTpGLrqFrvkrUSoxxfJI5AH7U8zxxtVclpsUtMCq4JQ290LY8AW5c7Ggnr/Y/oK+bQMbqK2qmtk3pN4g==}
 
@@ -1551,8 +1549,6 @@ packages:
 snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
-
-  '@devcontainers/cli@0.65.0': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
@@ -2578,6 +2574,8 @@ snapshots:
   json-schema-traverse@0.4.1: {}
 
   json-stable-stringify-without-jsonify@1.0.1: {}
+
+  jsonc-parser@3.3.1: {}
 
   jszip@3.10.1:
     dependencies:

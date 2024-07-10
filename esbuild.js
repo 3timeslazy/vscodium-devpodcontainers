@@ -41,6 +41,7 @@ async function main() {
 			/* add to the end of plugins array */
 			esbuildProblemMatcherPlugin,
 		],
+		mainFields: ["module", "main"]
 	});
 	if (watch) {
 		await ctx.watch();

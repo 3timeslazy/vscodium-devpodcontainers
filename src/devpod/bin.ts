@@ -22,7 +22,7 @@ export async function installDevpod() {
 			PodContainers extension uses DevPod CLI for bootstraping dev containers.
 			DevPod implements devcontainers specification, setups SSH and a does lots more.Without them this extension wouldn't exists.
 			It is free software created by Loft Labs which source code can be found here: https://github.com/loft-sh/devpod
-			`
+			`;
 			vscode.window.showInformationMessage(msg);
 			break;
 		}
@@ -31,7 +31,7 @@ export async function installDevpod() {
 
 export function devpodBinExists(): boolean {
 	const envPath = process.env['PATH'] || '';
-	const paths = envPath?.split(path.delimiter)
+	const paths = envPath?.split(path.delimiter);
 	let s = '';
 	for (const p of paths) {
 		const binpath = path.join(p, 'devpod');

@@ -36,7 +36,7 @@ type Devpod = {
     source: {
         localFolder: string
     }
-}
+};
 
 export async function listDevpods() {
 	return new Promise<Devpod[]>((resolve, reject) => {
