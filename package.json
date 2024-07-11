@@ -1,6 +1,6 @@
 {
-  "name": "vscodium-podcontainers",
-  "displayName": "PodContainers",
+  "name": "vscodium-devpodcontainers",
+  "displayName": "DevPod Containers",
   "description": "DevContainers support for VS Codium via DevPods",
   "version": "0.0.2",
   "engines": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/3timeslazy/vscodium-podcontainers.git"
+    "url": "https://github.com/3timeslazy/vscodium-devpodcontainers.git"
   },
   "license": "SEE LICENSE IN LICENSE",
   "categories": [
@@ -46,19 +46,14 @@
     },
     "commands": [
       {
-        "command": "vscodium-podcontainers.open",
+        "command": "vscodium-devpodcontainers.open",
         "title": "Open in Container",
-        "category": "PodContainers"
+        "category": "DevPod Containers"
       },
       {
-        "command": "vscodium-podcontainers.recreateAndOpen",
+        "command": "vscodium-devpodcontainers.recreateAndOpen",
         "title": "Recreate and Open in Container",
-        "category": "PodContainers"
-      },
-      {
-        "command": "vscodium-podcontainers.debug",
-        "title": "Debug",
-        "category": "PodContainers"
+        "category": "DevPod Containers"
       }
     ]
   },

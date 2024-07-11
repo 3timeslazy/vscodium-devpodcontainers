@@ -16,7 +16,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	initial();
 
 	context.subscriptions.push(vscode.commands.registerCommand(
-		'vscodium-podcontainers.open',
+		'vscodium-devpodcontainers.open',
 		() => openContainer(),
 	));
 

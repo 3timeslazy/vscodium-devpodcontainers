@@ -19,7 +19,7 @@ export async function installDevpod() {
 
 		case explain: {
 			const msg = `
-			PodContainers extension uses DevPod CLI for bootstraping dev containers.
+			DevPod Containers extension uses DevPod CLI for bootstraping dev containers.
 			DevPod implements devcontainers specification, setups SSH and a does lots more.Without them this extension wouldn't exists.
 			It is free software created by Loft Labs which source code can be found here: https://github.com/loft-sh/devpod
 			`;
