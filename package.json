@@ -6,6 +6,10 @@
   "engines": {
     "vscode": "^1.90.2"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3timeslazy/vscodium-podcontainers.git"
+  },
   "license": "SEE LICENSE IN LICENSE",
   "categories": [
     "Other"
@@ -50,14 +54,13 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run package",
+    "build": "node esbuild.js --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node",
     "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "package": "pnpm run build && pnpm vsce package --no-dependencies",
     "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src --ext ts",
@@ -77,6 +80,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@vscode/vsce": "^2.29.0",
     "jsonc-parser": "^3.3.1"
   }
 }
