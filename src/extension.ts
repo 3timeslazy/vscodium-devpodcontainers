@@ -4,10 +4,11 @@ import { devpodBinExists, installDevpod } from './devpod/bin';
 import * as jsonc from 'jsonc-parser';
 import { installCodeServer } from './vscodium/server';
 import { readFileSync } from 'fs';
+import { DevpodTreeView } from './treeView';
 
 // TODO: not fail when open vsx in not available
+// TODO: implement rebuild and reopen command
 // TODO: check devpod binary
-// TODO: hosttree for devpods
 // TODO: check podman and add podman provider
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -18,6 +19,10 @@ export async function activate(context: vscode.ExtensionContext) {
 		'vscodium-podcontainers.open',
 		() => openContainer(),
 	));
+
+	context.subscriptions.push(
+		vscode.window.createTreeView('devpods', { treeDataProvider: new DevpodTreeView() })
+	);
 }
 
 async function initial() {

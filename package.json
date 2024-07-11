@@ -2,7 +2,7 @@
   "name": "vscodium-podcontainers",
   "displayName": "PodContainers",
   "description": "DevContainers support for VS Codium via DevPods",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.90.2"
   },
@@ -14,6 +14,7 @@
   "categories": [
     "Other"
   ],
+  "enabledApiProposals": ["contribViewsRemote"],
   "activationEvents": [
     "onStartupFinished",
     "workspaceContains:.devcontainer/devcontainer.json",
@@ -35,6 +36,14 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "views": {
+      "remote": [
+        {
+          "id": "devpods",
+          "name": "DevPods"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "vscodium-podcontainers.open",
