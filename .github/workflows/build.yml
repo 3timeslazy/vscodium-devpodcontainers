@@ -1,0 +1,34 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - run: pnpm install
+      
+      - id: package-vsix
+        run: |
+          pnpm package
+
+          echo "VERSION=$(jq --raw-output '.version' package.json)" >> $GITHUB_OUTPUT
+          echo "VSIX_PATH=$(ls *.vsix)" >> $GITHUB_OUTPUT
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.package-vsix.outputs.VERSION }}
+          files: ${{ steps.package-vsix.outputs.VSIX_PATH }}
