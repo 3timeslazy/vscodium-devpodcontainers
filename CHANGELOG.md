@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.4
+
+- Add refresh button to the TreeView
+
 ## 0.0.3
 
 - Rename extension to DevPod Containers

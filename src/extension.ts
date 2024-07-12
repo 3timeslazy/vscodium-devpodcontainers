@@ -20,9 +20,9 @@ export async function activate(context: vscode.ExtensionContext) {
 		() => openContainer(),
 	));
 
-	context.subscriptions.push(
-		vscode.window.createTreeView('devpodcontainers.devpods', { treeDataProvider: new DevpodTreeView() })
-	);
+	const devpodsTreeView = new DevpodTreeView();
+	vscode.window.registerTreeDataProvider('devpodcontainers.devpods', devpodsTreeView);
+	vscode.commands.registerCommand('vscodium-devpodcontainers.refreshEntry', 	() => devpodsTreeView.refresh());
 }
 
 async function initial() {

@@ -2,7 +2,7 @@
   "name": "vscodium-devpodcontainers",
   "displayName": "DevPod Containers",
   "description": "DevContainers support for VS Codium via DevPods",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.90.2"
   },
@@ -14,12 +14,6 @@
   "license": "SEE LICENSE IN LICENSE",
   "categories": [
     "Other"
-  ],
-  "enabledApiProposals": ["contribViewsRemote"],
-  "activationEvents": [
-    "onStartupFinished",
-    "workspaceContains:.devcontainer/devcontainer.json",
-    "workspaceContains:.devcontainer.json"
   ],
   "keywords": [
     "devcontainer",
@@ -35,7 +29,13 @@
   "extensionDependencies": [
     "jeanp413.open-remote-ssh"
   ],
-  "main": "./dist/extension.js",
+
+  "enabledApiProposals": ["contribViewsRemote"],
+  "activationEvents": [
+    "onStartupFinished",
+    "workspaceContains:.devcontainer/devcontainer.json",
+    "workspaceContains:.devcontainer.json"
+  ],
   "contributes": {
     "views": {
       "remote": [
@@ -44,6 +44,15 @@
           "name": "DevPods",
           "group": "targets",
 					"remoteName": "devpods"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "vscodium-devpodcontainers.refreshEntry",
+          "when": "view == devpodcontainers.devpods",
+          "group": "navigation"
         }
       ]
     },
@@ -57,9 +66,16 @@
         "command": "vscodium-devpodcontainers.recreateAndOpen",
         "title": "Recreate and Open in Container",
         "category": "DevPod Containers"
+      },
+      {
+        "command": "vscodium-devpodcontainers.refreshEntry",
+        "title": "Refresh",
+        "icon": "$(refresh)"
       }
     ]
   },
+
+  "main": "./dist/extension.js",
   "scripts": {
     "build": "node esbuild.js --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node",
     "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",

@@ -1,5 +1,7 @@
 name: Build
 
+# TODO: separate build, release and publish jobs
+
 on:
   workflow_dispatch:
 

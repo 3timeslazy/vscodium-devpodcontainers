@@ -154,7 +154,7 @@ export async function installCodeServer(devpodAddr: string, extensionIds: string
 
     const exitCode = parseInt(resultMap.exitCode, 10);
     if (exitCode !== 0) {
-        throw new ServerInstallError(`Couldn't install vscode server on remote server, install script returned non-zero exit status`);
+        throw new ServerInstallError(`Couldn't install vscode server on remote server, install script returned non-zero exit status. \n\n ${commandOutput.stderr}`);
     }
 
     const listeningOn = resultMap.listeningOn.match(/^\d+$/)
