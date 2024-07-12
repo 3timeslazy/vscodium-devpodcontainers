@@ -4,7 +4,7 @@ VSCodium extension for remote development with devcontainers using [DevPod](http
 
 The extension is written by me and for me, so it lacks many features or may be confusing to use. So,if you find anything confusing or missing feel free to create an issue or a PR.
 
-![DevPod Containers](./docs/images/devpodcontainers-demo.gif)
+![DevPod Containers](./docs/images/devpodcontainers-demo.mp4)
 
 ## Install
 
