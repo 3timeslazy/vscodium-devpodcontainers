@@ -21,7 +21,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	));
 
 	context.subscriptions.push(
-		vscode.window.createTreeView('devpods', { treeDataProvider: new DevpodTreeView() })
+		vscode.window.createTreeView('devpodcontainers.devpods', { treeDataProvider: new DevpodTreeView() })
 	);
 }
 

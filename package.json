@@ -6,6 +6,7 @@
   "engines": {
     "vscode": "^1.90.2"
   },
+  "publisher": "3timeslazy",
   "repository": {
     "type": "git",
     "url": "https://github.com/3timeslazy/vscodium-devpodcontainers.git"
@@ -39,8 +40,10 @@
     "views": {
       "remote": [
         {
-          "id": "devpods",
-          "name": "DevPods"
+          "id": "devpodcontainers.devpods",
+          "name": "DevPods",
+          "group": "targets",
+					"remoteName": "devpods"
         }
       ]
     },

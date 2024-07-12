@@ -39,3 +39,9 @@ jobs:
         with:
           tag_name: v${{ steps.package-vsix.outputs.VERSION }}
           files: ${{ steps.package-vsix.outputs.VSIX_PATH }}
+
+      - name: Publish to Open VSX Registry
+        run: |
+          npx ovsx publish \
+            --packagePath ${{ steps.package-vsix.outputs.VSIX_PATH }} \
+            --pat ${{ secrets.OPEN_VSX_TOKEN }}
