@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.5
+
+- Implement 'Rebuild and Open' command
+
 ## 0.0.4
 
 - Add refresh button to the TreeView

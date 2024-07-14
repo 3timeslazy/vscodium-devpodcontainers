@@ -7,9 +7,10 @@ import { readFileSync } from 'fs';
 import { DevpodTreeView } from './treeView';
 
 // TODO: not fail when open vsx in not available
-// TODO: implement rebuild and reopen command
 // TODO: check devpod binary
 // TODO: check podman and add podman provider
+
+const recreate = true;
 
 export async function activate(context: vscode.ExtensionContext) {
 
@@ -19,10 +20,14 @@ export async function activate(context: vscode.ExtensionContext) {
 		'vscodium-devpodcontainers.open',
 		() => openContainer(),
 	));
+	context.subscriptions.push(vscode.commands.registerCommand(
+		'vscodium-devpodcontainers.recreateAndOpen',
+		() => openContainer(recreate),
+	));
 
 	const devpodsTreeView = new DevpodTreeView();
 	vscode.window.registerTreeDataProvider('devpodcontainers.devpods', devpodsTreeView);
-	vscode.commands.registerCommand('vscodium-devpodcontainers.refreshEntry', 	() => devpodsTreeView.refresh());
+	vscode.commands.registerCommand('vscodium-devpodcontainers.refreshEntry', () => devpodsTreeView.refresh());
 }
 
 async function initial() {
@@ -51,7 +56,7 @@ async function initial() {
 	}
 }
 
-async function openContainer() {
+async function openContainer(recreate: boolean = false) {
 	const containerFiles = await vscode.workspace.findFiles(".devcontainer/**/devcontainer.json");
 	if (containerFiles.length === 0) {
 		vscode.window.showInformationMessage('No devcontainer files found.');
@@ -97,6 +102,7 @@ async function openContainer() {
 	await upDevpod({
 		configPath: pick.path.replace(workspace.uri.path, ''),
 		workspaceFolder: workspace.uri.path,
+		recreate: recreate,
 	});
 
 	const devpods = listDevpods();
@@ -115,6 +121,7 @@ async function openContainer() {
 
 	const devpodUri = vscode.Uri.from({
 		scheme: 'vscode-remote',
+		// TODO: users other than `vscode`
 		authority: `ssh-remote+vscode@${devpod.id}.devpod`,
 		path: `/workspaces/${devpod.id}`,
 	});
