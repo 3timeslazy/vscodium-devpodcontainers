@@ -13,7 +13,7 @@ export async function installDevpod() {
 
 	switch (answer) {
 		case install: {
-			vscode.window.showErrorMessage('TODO: not implemented');
+			vscode.window.showErrorMessage('Sorry, but that buttun is not yet implemented.\nPlease, install devpod manually. The instuction can be found here: https://devpod.sh/docs/getting-started/install');
 			break;
 		}
 
