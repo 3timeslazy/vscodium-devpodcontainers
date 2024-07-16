@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.6
+
+- Support for any container username 
+- Better warning message
+
 ## 0.0.5
 
 - Implement 'Rebuild and Open' command

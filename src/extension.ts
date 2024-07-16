@@ -121,8 +121,7 @@ async function openContainer(recreate: boolean = false) {
 
 	const devpodUri = vscode.Uri.from({
 		scheme: 'vscode-remote',
-		// TODO: users other than `vscode`
-		authority: `ssh-remote+vscode@${devpod.id}.devpod`,
+		authority: `ssh-remote+${devpod.id}.devpod`,
 		path: `/workspaces/${devpod.id}`,
 	});
 	vscode.commands.executeCommand('vscode.openFolder', devpodUri);
