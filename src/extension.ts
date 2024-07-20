@@ -1,18 +1,18 @@
 import * as vscode from 'vscode';
 import { upDevpod, listDevpods } from './devpod/commands';
 import { devpodBinExists, installDevpod } from './devpod/bin';
-import * as jsonc from 'jsonc-parser';
 import { installCodeServer } from './vscodium/server';
-import { readFileSync } from 'fs';
+import * as path from 'path';
 import { DevpodTreeView } from './treeView';
+import { parseDevContainerConfig } from './spec';
+import { downloadRegistryExtensions, DOWNLOAD_EXTENSIONS_DIR } from './vscodium/extensions';
 
 // TODO: not fail when open vsx in not available
 // TODO: check devpod binary
 // TODO: check podman and add podman provider
 
-const recreate = true;
-
 export async function activate(context: vscode.ExtensionContext) {
+	const recreate = true;
 
 	initial();
 
@@ -105,40 +105,45 @@ async function openContainer(recreate: boolean = false) {
 		recreate: recreate,
 	});
 
-	const devpods = listDevpods();
+	const devpods = await listDevpods();
 	// TODO: more then one devpod in the directory.
-	const devpod = (await devpods).find((d) => d.source.localFolder === workspace.uri.path);
+	const devpod = devpods.find((d) => d.source.localFolder === workspace.uri.path);
 	if (!devpod) {
 		vscode.window.showErrorMessage('Unknown error: no devpod found');
 		return;
 	}
+	const devpodHost = `${devpod.id}.devpod`;
+
+	const conf = parseDevContainerConfig(pick.path);
+	const exts = conf.customizations?.vscodium?.extensions || [];
+	const installExtArgs = [];
+	const registryExts = [];
+	for (const [id, description] of Object.entries(exts)) {
+		if (Object.keys(description).length === 0) {
+			installExtArgs.push(id);
+		} else {
+			installExtArgs.push(path.join(DOWNLOAD_EXTENSIONS_DIR, `${id}.vsix`));
+			registryExts.push({
+				id: id,
+				version: description.version,
+			});
+		}
+	}
+
+	downloadRegistryExtensions(devpodHost, registryExts);
 
 	// Unfortunately, we have to inject the codium server outselves because
 	// DevPod does not support it (yet).
 	// 
 	// TODO: show message to users or log the script's output into the output channel
-	await injectCodiumServer(devpod.id, pick.path);
+	await installCodeServer(devpodHost, installExtArgs);
 
 	const devpodUri = vscode.Uri.from({
 		scheme: 'vscode-remote',
-		authority: `ssh-remote+${devpod.id}.devpod`,
+		authority: `ssh-remote+${devpodHost}`,
 		path: `/workspaces/${devpod.id}`,
 	});
 	vscode.commands.executeCommand('vscode.openFolder', devpodUri);
-}
-
-async function injectCodiumServer(devpodId: string, devcontainerJson: string) {
-	type DevContainerSpec = {
-		customizations?: {
-			vscodium?: {
-				extensions?: string[];
-			}
-		}
-	};
-	const specFile = readFileSync(devcontainerJson, { encoding: 'utf-8' });
-	const spec = jsonc.parse(specFile) as DevContainerSpec;
-	const extensions = spec.customizations?.vscodium?.extensions || [];
-	await installCodeServer(`${devpodId}.devpod`, extensions);
 }
 
 export function deactivate() { }

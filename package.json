@@ -2,7 +2,7 @@
   "name": "vscodium-devpodcontainers",
   "displayName": "DevPod Containers",
   "description": "DevContainers support for VS Codium via DevPods",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "engines": {
     "vscode": "^1.90.2"
   },
@@ -29,8 +29,9 @@
   "extensionDependencies": [
     "jeanp413.open-remote-ssh"
   ],
-
-  "enabledApiProposals": ["contribViewsRemote"],
+  "enabledApiProposals": [
+    "contribViewsRemote"
+  ],
   "activationEvents": [
     "onStartupFinished",
     "workspaceContains:.devcontainer/devcontainer.json",
@@ -43,7 +44,7 @@
           "id": "devpodcontainers.devpods",
           "name": "DevPods",
           "group": "targets",
-					"remoteName": "devpods"
+          "remoteName": "devpods"
         }
       ]
     },
@@ -74,7 +75,6 @@
       }
     ]
   },
-
   "main": "./dist/extension.js",
   "scripts": {
     "build": "node esbuild.js --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node",

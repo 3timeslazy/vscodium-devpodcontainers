@@ -6,6 +6,55 @@ VSCodium extension for remote development with devcontainers using [DevPod](http
 
 https://github.com/user-attachments/assets/69f34f33-14e5-4bcd-a96e-8b069e1727ef
 
+## DevContainer Customizations
+
+DevpodContainers extension implements a `customizations` format different from the format of VS Code. 
+
+For comparison, that's how the VS Code format looks like:
+
+```jsonc
+{
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "go.useLanguageServer": true,
+                "go.gopath": "/go"
+            },
+            "extensions": [
+                "golang.Go",
+                "connor4312.esbuild-problem-matchers"
+            ]
+        }
+    }
+}
+```
+
+And that's the extensions's format:
+
+```jsonc
+{
+    "customizations": {
+        "vscodium": {
+            // Settings are not yet supported
+            //
+            // "settings": {
+            //    "go.useLanguageServer": true,
+            //    "go.gopath": "/go"
+            // },
+            "extensions": {
+                "golang.Go": {},
+                "connor4312.esbuild-problem-matchers": {
+                    "registry": "microsoft",
+                    "version": "0.0.3"
+                }
+            }
+        }
+    }
+}
+```
+
+The key difference between the formats is that the extension gives developers more control and options in dealing with remote extensions. 
+
 ## Install
 
 **First step is to enable the extension**. To do so, add the following into `argv.json`
