@@ -4,8 +4,8 @@ import { devpodBinExists, installDevpod } from './devpod/bin';
 import { installCodeServer } from './vscodium/server';
 import * as path from 'path';
 import { DevpodTreeView } from './treeView';
-import { parseDevContainerConfig } from './spec';
-import { downloadRegistryExtensions, DOWNLOAD_EXTENSIONS_DIR } from './vscodium/extensions';
+import { parseCustomizations } from './spec';
+import { downloadExtension, DOWNLOAD_EXTENSIONS_DIR } from './marketplace';
 
 // TODO: not fail when open vsx in not available
 // TODO: check devpod binary
@@ -114,23 +114,23 @@ async function openContainer(recreate: boolean = false) {
 	}
 	const devpodHost = `${devpod.id}.devpod`;
 
-	const conf = parseDevContainerConfig(pick.path);
-	const exts = conf.customizations?.vscodium?.extensions || [];
+	const exts = parseCustomizations(pick.path).extensions;
 	const installExtArgs = [];
 	const registryExts = [];
-	for (const [id, description] of Object.entries(exts)) {
-		if (Object.keys(description).length === 0) {
-			installExtArgs.push(id);
+	for (const ext of exts) {
+		// No registry specified, so let vscodium server handle it by
+		// providing extension ID.
+		if (!ext.registry) {
+			installExtArgs.push(ext.id);
 		} else {
-			installExtArgs.push(path.join(DOWNLOAD_EXTENSIONS_DIR, `${id}.vsix`));
+			installExtArgs.push(path.join(DOWNLOAD_EXTENSIONS_DIR, `${ext.id}.vsix`));
 			registryExts.push({
-				id: id,
-				version: description.version,
+				id: ext.id,
+				version: ext.version,
 			});
 		}
 	}
-
-	downloadRegistryExtensions(devpodHost, registryExts);
+	await Promise.allSettled(registryExts.map((ext) => downloadExtension(devpodHost, ext)));
 
 	// Unfortunately, we have to inject the codium server outselves because
 	// DevPod does not support it (yet).

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.8
+
+- Fallback to vscode.customization.extensions
+
 ## 0.0.7
 
 - Introduce new customizations format giving devs more control and options in dealing remote extensions.
