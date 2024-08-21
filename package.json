@@ -2,7 +2,7 @@
   "name": "vscodium-devpodcontainers",
   "displayName": "DevPod Containers",
   "description": "DevContainers support for VS Codium via DevPods",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "engines": {
     "vscode": "^1.90.2"
   },

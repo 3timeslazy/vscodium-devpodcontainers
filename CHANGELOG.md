@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.9
+
+- Add --ide none option
+
 ## 0.0.8
 
 - Fallback to vscode.customization.extensions

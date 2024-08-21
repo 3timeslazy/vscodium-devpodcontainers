@@ -14,6 +14,7 @@ export async function upDevpod(args: {
 			'up',
 			'--devcontainer-path', args.configPath,
 			'--log-output', 'raw',
+			'--ide', 'none',
 			args.workspaceFolder,
 		];
 		if (args.recreate) {
