@@ -2,6 +2,10 @@
 
 ## 0.0.9
 
+- Add "customizations.registries" section
+
+## 0.0.9
+
 - Add --ide none option
 
 ## 0.0.8

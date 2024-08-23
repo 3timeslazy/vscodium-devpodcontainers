@@ -1,12 +1,16 @@
-import { Extension } from "./spec";
 import * as path from 'path';
 import { spawnSync } from 'child_process';
 
 export const DOWNLOAD_EXTENSIONS_DIR = "$HOME/.devpodcontainers/extensions";
 
-export async function latestExtVersion(id: string): Promise<string> {
-    const resp = await fetch(`${MS_REGISTRY_URL}/extensionquery`, {
+export async function latestExtVersion(
+    registryUrl: string, 
+    headers: Record<string, string>, 
+    id: string,
+): Promise<string | null> {
+    const resp = await fetch(`${registryUrl}/extensionquery`, {
         method: "POST",
+        headers: headers,
         body: JSON.stringify({
             filters: [{
                 criteria: [{
@@ -18,27 +22,41 @@ export async function latestExtVersion(id: string): Promise<string> {
             flags: 1
         })
     });
-    const data = resp.json() as any;
 
-    // TODO: handler wrong response
+    const data = await resp.json() as any;
+    if (data.results.length == 0 || data.results[0].extensions.length == 0) {
+        return null;
+    }
+
     return data.results[0].extensions[0].versions[0].version as string;
 }
 
-const MS_REGISTRY_URL = "https://marketplace.visualstudio.com/_apis/public/gallery";
+export async function downloadExtension(args: { 
+    devpodHost: string, 
+    extId: string,
+    extVersion?: string,
+    registryUrl: string,
+    registryHeaders: Record<string, string>,
+}) {
+    let version = args.extVersion 
+        ? args.extVersion 
+        : await latestExtVersion(args.registryUrl, args.registryHeaders, args.extId);
 
-export async function downloadExtension(devpodHost: string, ext: Extension) {
-    let version = ext.version ? ext.version : await latestExtVersion(ext.id);
+    // TODO: let users know that that happened.
+    if (version === null) {
+        return;
+    }
 
 	// TODO: fallback to wget
 	let script = `mkdir -p ${DOWNLOAD_EXTENSIONS_DIR}\n`;
-	const [publisher, name] = ext.id.split('.', 2);
-	const url = path.join(MS_REGISTRY_URL, `publishers/${publisher}/vsextensions/${name}/${version}/vspackage`);
+	const [publisher, name] = args.extId.split('.', 2);
+	const url = path.join(args.registryUrl, `publishers/${publisher}/vsextensions/${name}/${version}/vspackage`);
 	script += `curl \
 		--location --show-error \
 		--silent --compressed \
-		--output ${DOWNLOAD_EXTENSIONS_DIR}/${ext.id}.vsix \
+		--output ${DOWNLOAD_EXTENSIONS_DIR}/${args.extId}.vsix \
 		${url}\n`;
 
 	// TODO: write output to output channel
-	spawnSync('ssh', [devpodHost, '--', 'bash', '-c', `'${script}'`]);
+	spawnSync('ssh', [args.devpodHost, '--', 'bash', '-c', `'${script}'`]);
 }

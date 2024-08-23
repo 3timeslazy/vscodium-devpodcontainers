@@ -114,7 +114,8 @@ async function openContainer(recreate: boolean = false) {
 	}
 	const devpodHost = `${devpod.id}.devpod`;
 
-	const exts = parseCustomizations(pick.path).extensions;
+	const customizations = parseCustomizations(pick.path);
+	const exts = customizations.extensions;
 	const installExtArgs = [];
 	const registryExts = [];
 	for (const ext of exts) {
@@ -127,10 +128,18 @@ async function openContainer(recreate: boolean = false) {
 			registryExts.push({
 				id: ext.id,
 				version: ext.version,
+				registryUrl: customizations.registries[ext.registry].url,
+				registryHeaders: customizations.registries[ext.registry].headers,
 			});
 		}
 	}
-	await Promise.allSettled(registryExts.map((ext) => downloadExtension(devpodHost, ext)));
+	await Promise.allSettled(registryExts.map((ext) => downloadExtension({
+		devpodHost: devpodHost,
+		extId: ext.id,
+		extVersion: ext.version,
+		registryUrl: ext.registryUrl,
+		registryHeaders: ext.registryHeaders,
+	})));
 
 	// Unfortunately, we have to inject the codium server outselves because
 	// DevPod does not support it (yet).

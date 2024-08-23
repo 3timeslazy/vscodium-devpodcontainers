@@ -2,9 +2,15 @@
 
 VSCodium extension for remote development with devcontainers using [DevPod](https://github.com/loft-sh/devpod).
 
-> The extension is written by me and for me, so it lacks many features or may be confusing to use. So,if you find anything confusing or missing feel free to create an issue or a PR.
+> The extension is written by me and for me, so it lacks many features or may be confusing to use. So, if you find anything confusing or missing feel free to create an issue or a PR.
 
 https://github.com/user-attachments/assets/69f34f33-14e5-4bcd-a96e-8b069e1727ef
+
+## Features
+
+- Works with VS Codium.
+- Aware of differen container engines. Will add Podman's `--userns=keep-id` for you.
+- Supports alternative extension registries.
 
 ## DevContainer Customizations
 
@@ -41,12 +47,46 @@ And that's the extensions's format:
             //    "go.useLanguageServer": true,
             //    "go.gopath": "/go"
             // },
-            "extensions": {
-                "golang.Go": {},
-                "connor4312.esbuild-problem-matchers": {
-                    "registry": "microsoft",
-                    "version": "0.0.3"
+
+            // Here you can define additional registries, which can later
+            // be referred in the "extensions" section.
+            // 
+            // OpenVSX here is just an example, if you use VS Codium
+            // without any product.json modifications, just skip this part.
+            // 
+            // This part is intended to be of use for enterprises and anyone with their private
+            // extensions registry. See: https://github.com/coder/code-marketplace
+            "registries": {
+                // Registry alias to be used in the "extensions" section.
+                "openvsx": {
+                    // Registry base url. Must be compatible with OpenVSX API.
+                    // See: https://github.com/eclipse/openvsx/wiki/Using-Open-VSX-in-VS-Code
+                    "url": "https://open-vsx.org/vscode/gallery",
+
+                    // Random headers you'd like to add to all registry requests.
+                    "headers": {
+                        "Accept": "application/json"
+                    }
                 }
+
+                // NOTE: Please, remember that putting Microsoft's Marketplace URL
+                // may be prohibited by its Terms of Use.
+                // See: https://cdn.vsassets.io/v/M190_20210811.1/_content/Microsoft-Visual-Studio-Marketplace-Terms-of-Use.pdf
+            },
+
+            // Extensions configuration
+            "extensions": {
+                // This extension will be downloaded from your editor's 
+                // default registry, which is OpenVSX for VS Codium and
+                // Visual Studio Marketplace for VS Code.
+                "golang.Go": {},
+
+                // If you wish, you can specify the desired registry and
+                // version for the extension.
+                "webben.browserslist": {
+                    "registry": "openvsx",
+                    "version": "11.0.0"
+                },
             }
         }
     }
