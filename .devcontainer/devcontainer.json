@@ -1,0 +1,17 @@
+{
+    "name": "DevContainer",
+    "build": {
+        "dockerfile": "./Dockerfile",
+        "context": ".."
+    },
+    "workspaceMount": "",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "runArgs": [
+        "--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:Z"
+    ],
+    "customizations": {
+        "vscodium": {
+            "esbenp.prettier-vscode": {}
+        }
+    }
+}
