@@ -24,6 +24,15 @@ export async function activate(context: vscode.ExtensionContext) {
 		'vscodium-devpodcontainers.recreateAndOpen',
 		() => openContainer(recreate),
 	));
+	context.subscriptions.push(vscode.commands.registerCommand(
+		'vscodium-devpodcontainers.list',
+		async () => {
+			const devpods = await listDevpods();
+			vscode.window.
+				showQuickPick(devpods.map((d) => d.id)).
+				then(id => { if (id) { redirectToDevpod(id); }});
+		},
+	));
 
 	const devpodsTreeView = new DevpodTreeView();
 	vscode.window.registerTreeDataProvider('devpodcontainers.devpods', devpodsTreeView);
@@ -147,12 +156,17 @@ async function openContainer(recreate: boolean = false) {
 	// TODO: show message to users or log the script's output into the output channel
 	await installCodeServer(devpodHost, installExtArgs);
 
-	const devpodUri = vscode.Uri.from({
+	redirectToDevpod(devpod.id);
+}
+
+function redirectToDevpod(id: string) {
+	const devpodHost = `${id}.devpod`;
+	const uri = vscode.Uri.from({
 		scheme: 'vscode-remote',
 		authority: `ssh-remote+${devpodHost}`,
-		path: `/workspaces/${devpod.id}`,
+		path: `/workspaces/${id}`,
 	});
-	vscode.commands.executeCommand('vscode.openFolder', devpodUri);
+	vscode.commands.executeCommand('vscode.openFolder', uri);
 }
 
 export function deactivate() { }

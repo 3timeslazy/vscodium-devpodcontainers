@@ -2,7 +2,7 @@
   "name": "vscodium-devpodcontainers",
   "displayName": "DevPod Containers",
   "description": "DevContainers support for VS Codium via DevPods",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -72,6 +72,11 @@
         "command": "vscodium-devpodcontainers.refreshEntry",
         "title": "Refresh",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "vscodium-devpodcontainers.list",
+        "title": "Show Workspaces",
+        "category": "DevPod Containers"
       }
     ]
   },

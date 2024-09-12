@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.12
+
+- Add "DevPod Containers: Show Workspaces" command
+
 ## 0.0.11
 
 - Set minimal support VS Codium version to 1.80
