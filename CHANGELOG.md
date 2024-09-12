@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.11
+
+- Set minimal support VS Codium version to 1.80
+
 ## 0.0.9
 
 - Add "customizations.registries" section
