@@ -1,5 +1,16 @@
 # DevPod Containers
 
+<div>
+    <a href="https://codeberg.org/3timeslazy/vscodium-devpodcontainers">
+        <img alt="Get it on Codeberg" src="https://img.shields.io/badge/Codeberg-2185D0?style=for-the-badge&logo=Codeberg&logoColor=white" height="60">
+    </a>
+    <a href="https://github.com/3timeslazy/vscodium-devpodcontainers">
+        <img alt="Get it on Codeberg" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="60">
+    </a>
+</div>
+
+---
+
 VSCodium extension for remote development with devcontainers using [DevPod](https://github.com/loft-sh/devpod).
 
 > The extension is written by me and for me, so it lacks many features or may be confusing to use. So, if you find anything confusing or missing feel free to create an issue or a PR.
