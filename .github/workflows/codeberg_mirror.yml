@@ -1,0 +1,15 @@
+name: Mirror to Codeberg
+on:
+  push:
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mirror to Codeberg
+        run: |
+          git fetch --unshallow
+          git remote set-url --add --push origin https://3timelazy:${{secrets.CODEBERG_TOKEN}}@codeberg.org/3timeslazy/vscodium-devpodcontainers.git
+          git push --all
