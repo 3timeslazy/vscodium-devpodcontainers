@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { spawn } from 'child_process';
+import { spawn, spawnSync } from 'child_process';
 
 export async function upDevpod(args: {
 	configPath: string,
@@ -62,4 +62,14 @@ export async function listDevpods() {
 			return resolve(JSON.parse(stdout) as Devpod[]);
 		});
 	});
+}
+
+// a dirty hack until I find a better solution.
+export function findWorkDir(devpodHost: string) {
+	const output = spawnSync('ssh', [devpodHost, '--', 'pwd']);
+	if (output.stdout) {
+		return output.stdout.toString('utf-8').trim();
+	}
+
+	return null;
 }

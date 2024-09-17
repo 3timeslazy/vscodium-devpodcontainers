@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.13
+
+- Detect workspace dir inside containers
+
 ## 0.0.12
 
 - Add "DevPod Containers: Show Workspaces" command

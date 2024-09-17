@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { upDevpod, listDevpods } from './devpod/commands';
+import { upDevpod, listDevpods, findWorkDir } from './devpod/commands';
 import { devpodBinExists, installDevpod } from './devpod/bin';
 import { installCodeServer } from './vscodium/server';
 import * as path from 'path';
@@ -161,10 +161,15 @@ async function openContainer(recreate: boolean = false) {
 
 function redirectToDevpod(id: string) {
 	const devpodHost = `${id}.devpod`;
+	const workdir = findWorkDir(devpodHost);
+	if (!workdir) {
+		vscode.window.showErrorMessage("Unknown error: couldn't find container's workdir.");
+		return;
+	}
 	const uri = vscode.Uri.from({
 		scheme: 'vscode-remote',
 		authority: `ssh-remote+${devpodHost}`,
-		path: `/workspaces/${id}`,
+		path: workdir,
 	});
 	vscode.commands.executeCommand('vscode.openFolder', uri);
 }
