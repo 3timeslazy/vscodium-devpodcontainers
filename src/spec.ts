@@ -39,14 +39,14 @@ export function parseCustomizations(path: string): Customizations {
   if (codium) {
     return {
       extensions: Object.entries(codium).map(([id, ext]) => ({ id, ...ext })),
-	  registries: spec.customizations?.vscodium?.registries || {},
+      registries: spec.customizations?.vscodium?.registries || {},
     };
   }
   if (vscode) {
     return {
       // TODO: check extensions for their presence in openvsx?
-      extensions: vscode.map((id) => ({ id })),
-	    registries: {},
+      extensions: vscode.map(id => ({ id })),
+      registries: {},
     };
   }
 

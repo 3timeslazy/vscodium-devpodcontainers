@@ -6,34 +6,34 @@ import { listDevpods } from "./devpod/commands";
 //   - TODO: inline actions
 
 type DevpodTreeItem = {
-    devpodId: string
+  devpodId: string;
 };
 
 type EventData = DevpodTreeItem | undefined | null | void;
 
 export class DevpodTreeView implements vscode.TreeDataProvider<DevpodTreeItem> {
+  private _onDidChangeTreeData: vscode.EventEmitter<EventData> =
+    new vscode.EventEmitter<EventData>();
+  readonly onDidChangeTreeData: vscode.Event<EventData> = this._onDidChangeTreeData.event;
 
-    private _onDidChangeTreeData: vscode.EventEmitter<EventData> = new vscode.EventEmitter<EventData>();
-    readonly onDidChangeTreeData: vscode.Event<EventData> = this._onDidChangeTreeData.event;
+  constructor() {}
 
-    constructor() {}
-    
-    getTreeItem(element: DevpodTreeItem): vscode.TreeItem {
-        const item = new vscode.TreeItem(element.devpodId);
-        item.iconPath = new vscode.ThemeIcon('vm');
-        return item;
+  getTreeItem(element: DevpodTreeItem): vscode.TreeItem {
+    const item = new vscode.TreeItem(element.devpodId);
+    item.iconPath = new vscode.ThemeIcon("vm");
+    return item;
+  }
+
+  async getChildren(element?: DevpodTreeItem): Promise<DevpodTreeItem[]> {
+    if (element) {
+      return [];
     }
 
-    async getChildren(element?: DevpodTreeItem): Promise<DevpodTreeItem[]> {
-        if (element) {
-            return [];
-        }
+    const devpods = await listDevpods();
+    return devpods.map(d => ({ devpodId: d.id }));
+  }
 
-        const devpods = await listDevpods();
-        return devpods.map((d) => ({ devpodId: d.id }));
-    }
-
-    refresh(): void {
-        this._onDidChangeTreeData.fire();
-    }
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
+  }
 }
