@@ -1,6 +1,4 @@
 import vscode from 'vscode';
-import path from 'path';
-import fs from 'fs';
 import which from 'which';
 
 export async function installDevpod() {
