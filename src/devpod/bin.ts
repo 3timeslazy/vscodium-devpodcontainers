@@ -1,6 +1,7 @@
 import vscode from 'vscode';
 import path from 'path';
 import fs from 'fs';
+import which from 'which';
 
 export async function installDevpod() {
 	const install = { title: 'Install' };
@@ -30,27 +31,5 @@ export async function installDevpod() {
 }
 
 export function devpodBinExists(): boolean {
-	const envPath = process.env['PATH'] || '';
-	const paths = envPath?.split(path.delimiter);
-	let s = '';
-	for (const p of paths) {
-		const binpath = path.join(p, 'devpod');
-		if (executableFileExists(binpath)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function executableFileExists(filePath: string): boolean {
-	let exists = true;
-	try {
-		exists = fs.statSync(filePath).isFile();
-		if (exists) {
-			fs.accessSync(filePath, fs.constants.F_OK | fs.constants.X_OK);
-		}
-	} catch (e) {
-		exists = false;
-	}
-	return exists;
+	return which.sync('devpod', { nothrow: true }) !== null;
 }

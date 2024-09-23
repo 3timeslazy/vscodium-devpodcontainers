@@ -110,20 +110,20 @@ async function openContainer(recreate: boolean = false) {
 
 	await upDevpod({
 		configPath: pick.path.replace(workspace.uri.path, ''),
-		workspaceFolder: workspace.uri.path,
+		workspaceFolder: workspace.uri.fsPath,
 		recreate: recreate,
 	});
 
 	const devpods = await listDevpods();
 	// TODO: more then one devpod in the directory.
-	const devpod = devpods.find((d) => d.source.localFolder === workspace.uri.path);
+	const devpod = devpods.find((d) => d.source.localFolder === workspace.uri.fsPath);
 	if (!devpod) {
 		vscode.window.showErrorMessage('Unknown error: no devpod found');
 		return;
 	}
 	const devpodHost = `${devpod.id}.devpod`;
 
-	const customizations = parseCustomizations(pick.path);
+	const customizations = parseCustomizations(pick.fsPath);
 	const exts = customizations.extensions;
 	const installExtArgs = [];
 	const registryExts = [];
