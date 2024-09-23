@@ -1,7 +1,8 @@
 import vscode from 'vscode';
 import { installCLI } from "./devpod/bin";
 
-const outputChan = vscode.window.createOutputChannel("Install DevPod");
+// TODO: ask for installation path
+// TODO: show error message of windows
 
 export async function installDevpod() {
 	const install = { title: 'Install' };
@@ -14,6 +15,7 @@ export async function installDevpod() {
 
 	switch (answer) {
 		case install: {
+			const outputChan = vscode.window.createOutputChannel("Install DevPod");
 			const success = await vscode.window.withProgress(
 				{
 					title: "Installing devpod",
