@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { upDevpod, listDevpods, findWorkDir } from "./devpod/commands";
-import { devpodBinExists, installDevpod } from "./devpod/bin";
+import { devpodBinExists } from "./devpod/bin";
+import { installDevpod } from "./devpod";
 import { installCodeServer } from "./vscodium/server";
 import * as path from "path";
 import { DevpodTreeView } from "./treeView";
