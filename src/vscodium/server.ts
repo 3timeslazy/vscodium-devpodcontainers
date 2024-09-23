@@ -95,7 +95,8 @@ export async function installCodeServer(devpodAddr: string, extensionIds: string
 
         const installDir = `$HOME\\${vscodeServerConfig.serverDataFolderName}\\install`;
         const installScript = `${installDir}\\${vscodeServerConfig.commit}.ps1`;
-        const endRegex = new RegExp(`${scriptId}: end`);
+        // TODO: fix
+        // const endRegex = new RegExp(`${scriptId}: end`);
         // investigate if it's possible to use `-EncodedCommand` flag
         // https://devblogs.microsoft.com/powershell/invoking-powershell-with-complex-expressions-using-scriptblocks/
         let command = '';
