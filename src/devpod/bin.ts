@@ -1,7 +1,7 @@
 import vscode from 'vscode';
 import path from 'path';
 import fs from 'fs';
-import commandExists from 'command-exists';
+import which from 'which';
 
 export async function installDevpod() {
 	const install = { title: 'Install' };
@@ -30,8 +30,6 @@ export async function installDevpod() {
 	}
 }
 
-export function devpodBinExists(): Promise<boolean> {
-	return commandExists('devpod')
-    .then(() => true)
-    .catch(() => false);
+export function devpodBinExists(): boolean {
+	return which.sync('devpod', { nothrow: true }) !== null;
 }
