@@ -69,6 +69,6 @@ echo "Done"
 `;
 }
 
-export function devpodBinExists(): boolean {
+export function cliExists(): boolean {
 	return which.sync('devpod', { nothrow: true }) !== null;
 }

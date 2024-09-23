@@ -1,15 +1,14 @@
-import * as vscode from "vscode";
-import { upDevpod, listDevpods, findWorkDir } from "./devpod/commands";
-import { devpodBinExists } from "./devpod/bin";
+import * as vscode from 'vscode';
+import { upDevpod, listDevpods, findWorkDir } from './devpod/commands';
+import { cliExists } from './devpod/bin';
 import { installDevpod } from "./devpod";
-import { installCodeServer } from "./vscodium/server";
-import * as path from "path";
-import { DevpodTreeView } from "./treeView";
-import { parseCustomizations } from "./spec";
-import { downloadExtension, DOWNLOAD_EXTENSIONS_DIR } from "./marketplace";
+import { installCodeServer } from './vscodium/server';
+import * as path from 'path';
+import { DevpodTreeView } from './treeView';
+import { parseCustomizations } from './spec';
+import { downloadExtension, DOWNLOAD_EXTENSIONS_DIR } from './marketplace';
 
 // TODO: not fail when open vsx in not available
-// TODO: check devpod binary
 // TODO: check podman and add podman provider
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -70,16 +69,16 @@ async function initial() {
 }
 
 async function openContainer(recreate: boolean = false) {
-  const containerFiles = await vscode.workspace.findFiles(".devcontainer/**/devcontainer.json");
-  if (containerFiles.length === 0) {
-    vscode.window.showInformationMessage("No devcontainer files found.");
-    return;
-  }
-  if (!devpodBinExists()) {
-    await installDevpod();
-    // TODO: delete the return once installDevpod is implemented
-    return;
-  }
+	const containerFiles = await vscode.workspace.findFiles(".devcontainer/**/devcontainer.json");
+	if (containerFiles.length === 0) {
+		vscode.window.showInformationMessage('No devcontainer files found.');
+		return;
+	}
+	if (!cliExists()) {
+		await installDevpod();
+		// TODO: delete the return once installDevpod is implemented
+		return;
+	}
 
   const opened = vscode.window.activeTextEditor?.document?.uri;
   const workspace =
