@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.14
+
+- Fix devpod cli detection on Windows
+
 ## 0.0.13
 
 - Detect workspace dir inside containers
