@@ -82,34 +82,19 @@
   },
   "main": "./dist/extension.js",
   "scripts": {
-    "build": "node esbuild.js --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node",
-    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:esbuild": "node esbuild.js --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "pnpm run build && pnpm vsce package --no-dependencies",
-    "compile-tests": "tsc -p . --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-    "check-types": "tsc --noEmit",
-    "lint": "eslint src --ext ts",
-    "test": "vscode-test"
+    "watch": "tsc --build --watch",
+    "build": "tsc --build",
+    "package": "pnpm run build && pnpm vsce package --no-dependencies"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.7",
     "@types/node": "^20.16.5",
     "@types/vscode": "^1.80.0",
     "@types/which": "^3.0.4",
-    "@typescript-eslint/eslint-plugin": "^7.14.1",
-    "@typescript-eslint/parser": "^7.11.0",
-    "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.4.0",
-    "esbuild": "^0.21.5",
-    "eslint": "^8.57.0",
-    "npm-run-all": "^4.1.5",
+    "@vscode/vsce": "^2.29.0",
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@vscode/vsce": "^2.29.0",
-    "jsonc-parser": "^3.3.1"
+    "jsonc-parser": "^3.3.1",
+    "which": "^4.0.0"
   }
 }
