@@ -1,9 +1,6 @@
 import vscode from 'vscode';
 import { installCLI } from "./devpod/bin";
 
-// TODO: ask for installation path
-// TODO: show error message of windows
-
 export async function installDevpod() {
 	const install = { title: 'Install' };
 	const explain = { title: "Explain me what it is" };
@@ -15,6 +12,16 @@ export async function installDevpod() {
 
 	switch (answer) {
 		case install: {
+			const path = await vscode.window.showInputBox({
+				title: "Installation path",
+				value: "~/.local/bin",
+				prompt: "The installation path must be included into $PATH env"
+			});
+			if (!path) {
+				vscode.window.showInformationMessage("Installation cancelled.");
+				return;
+			}
+			
 			const outputChan = vscode.window.createOutputChannel("Install DevPod");
 			const success = await vscode.window.withProgress(
 				{
@@ -22,16 +29,17 @@ export async function installDevpod() {
 					location: vscode.ProgressLocation.Notification,
 					cancellable: false
 				},
-				() => { return installCLI(outputChan); }
+				() => { return installCLI(path, outputChan); }
 			);
 			if (success) {
 				vscode.window.showInformationMessage("devpod installed!");
 				break;
 			}
 
-			let msg = "Failed to install devpod.\n";
-			msg += "Please, install it manually. ";
-			msg += "[Installation guide](https://devpod.sh/docs/getting-started/install#optional-install-devpod-cli)";
+			let msg = "Unable to install devpod. " +
+				"Follow " +
+				"[installation guide](https://devpod.sh/docs/getting-started/install#optional-install-devpod-cli) " +
+				"to install in manually"
 			vscode.window.showErrorMessage(msg);
 			outputChan.show(true);
 			break;

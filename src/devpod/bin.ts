@@ -2,9 +2,9 @@ import vscode from 'vscode';
 import which from 'which';
 import { spawn } from "child_process";
 
-export async function installCLI(outputChannel: vscode.OutputChannel) {
+export async function installCLI(path: string, outputChannel: vscode.OutputChannel) {
 	return new Promise(resolve => {
-		const installScript = generateBashInstallScript();
+		const installScript = generateBashInstallScript(path);
 		const proc = spawn('bash', ['-c', installScript]);
 		proc.stdout.on('data', data => {
 			outputChannel.append(data.toString());
@@ -18,21 +18,18 @@ export async function installCLI(outputChannel: vscode.OutputChannel) {
 	});
 }
 
-function generateBashInstallScript() {
+function generateBashInstallScript(cliPath: string) {
 	return `
 PLATFORM=
 SERVER_ARCH=
 
 KERNEL="$(uname -s)"
 case $KERNEL in
-    Darwin)
-        PLATFORM="darwin"
-        ;;
     Linux)
         PLATFORM="linux"
         ;;
     *)
-    	echo "Platform not supported: $KERNEL"
+    	echo "Automatic installation is not supported for the platform: $KERNEL. Please, install in manually"
     	exit 1
     	;;
 esac
@@ -46,7 +43,7 @@ case $ARCH in
         SERVER_ARCH="arm64"
         ;;
     *)
-        echo "Architecture not supported: $ARCH"
+        echo "Automatic installation is not supported for the architecture: $KERNEL. Please, install in manually"
         exit 1
         ;;
 esac
@@ -58,8 +55,8 @@ if (( $? > 0 )); then
     exit 1
 fi
 
-echo "Installing devpod into $HOME/.local/bin"
-install -c -m 0755 devpod $HOME/.local/bin && rm -f devpod
+echo "Installing devpod into ${cliPath}"
+install -c -m 0755 devpod ${cliPath} && rm -f devpod
 if (( $? > 0 )); then
     echo "Failed to install devpod"
     exit 1

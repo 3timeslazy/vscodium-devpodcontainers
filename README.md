@@ -136,6 +136,7 @@ $ code --install-extension /path/to/vsix
 
 - **devpod** CLI
 - **ssh**
+- **curl** or **wget** on both host and container
 
 ## FAQ
 

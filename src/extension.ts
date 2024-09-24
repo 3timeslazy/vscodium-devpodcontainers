@@ -27,8 +27,9 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("vscodium-devpodcontainers.list", async () => {
       const devpods = await listDevpods();
-      vscode.window.showQuickPick(devpods.map(d => d.id)).then(id => {
+      vscode.window.showQuickPick(devpods.map(d => d.id)).then(async id => {
         if (id) {
+          // TODO: check if devpod is installed
           redirectToDevpod(id);
         }
       });
@@ -75,8 +76,8 @@ async function openContainer(recreate: boolean = false) {
 		return;
 	}
 	if (!cliExists()) {
+    // TODO: return ok/fail and proceed if ok, otherwise show notification
 		await installDevpod();
-		// TODO: delete the return once installDevpod is implemented
 		return;
 	}
 
