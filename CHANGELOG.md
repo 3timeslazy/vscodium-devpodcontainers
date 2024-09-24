@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.15
+
+- Fixed broked vsix package
+
 ## 0.0.14
 
 - Fix devpod cli detection on Windows
