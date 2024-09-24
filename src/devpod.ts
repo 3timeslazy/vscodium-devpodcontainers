@@ -19,7 +19,7 @@ export async function installDevpod() {
 			});
 			if (!path) {
 				vscode.window.showInformationMessage("Installation cancelled.");
-				return;
+				return false;
 			}
 			
 			const outputChan = vscode.window.createOutputChannel("Install DevPod");
@@ -33,7 +33,7 @@ export async function installDevpod() {
 			);
 			if (success) {
 				vscode.window.showInformationMessage("devpod installed!");
-				break;
+				return true;
 			}
 
 			let msg = "Unable to install devpod. " +
@@ -42,7 +42,7 @@ export async function installDevpod() {
 				"to install in manually"
 			vscode.window.showErrorMessage(msg);
 			outputChan.show(true);
-			break;
+			return false;
 		}
 
 		case explain: {
@@ -52,7 +52,10 @@ export async function installDevpod() {
 			It is free software created by Loft Labs which source code can be found here: https://github.com/loft-sh/devpod
 			`;
 			vscode.window.showInformationMessage(msg);
-			break;
+			return false;
 		}
+
+		default:
+			return false;
 	}
 }

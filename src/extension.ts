@@ -76,9 +76,11 @@ async function openContainer(recreate: boolean = false) {
 		return;
 	}
 	if (!cliExists()) {
-    // TODO: return ok/fail and proceed if ok, otherwise show notification
-		await installDevpod();
-		return;
+		const installed = await installDevpod();
+    if (!installed) {
+      return;
+    }
+    // TODO: better dockerfile pick
 	}
 
   const opened = vscode.window.activeTextEditor?.document?.uri;
