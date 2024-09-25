@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { upDevpod, listDevpods, findWorkDir } from "./devpod/commands";
-import { devpodBinExists, installDevpod } from "./devpod/bin";
+import { devpodBinExists } from "./devpod/bin";
+import { installDevpod } from "./devpod";
 import { installCodeServer } from "./vscodium/server";
 import * as path from "path";
 import { DevpodTreeView } from "./treeView";
@@ -8,8 +9,6 @@ import { parseCustomizations } from "./spec";
 import { downloadExtension, DOWNLOAD_EXTENSIONS_DIR } from "./marketplace";
 
 // TODO: not fail when open vsx in not available
-// TODO: check devpod binary
-// TODO: check podman and add podman provider
 
 export async function activate(context: vscode.ExtensionContext) {
   const recreate = true;
@@ -76,7 +75,6 @@ async function openContainer(recreate: boolean = false) {
   }
   if (!devpodBinExists()) {
     await installDevpod();
-    // TODO: delete the return once installDevpod is implemented
     return;
   }
 
