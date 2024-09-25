@@ -23,11 +23,46 @@ https://github.com/user-attachments/assets/69f34f33-14e5-4bcd-a96e-8b069e1727ef
 - Aware of differen container engines. Will add Podman's `--userns=keep-id` for you.
 - Supports alternative extension registries.
 
-## DevContainer Customizations
+## Installation
 
-DevpodContainers extension implements a `customizations` format different from the format of VS Code. 
 
-For comparison, that's how the VS Code format looks like:
+**Enable experimental API for the extension**. This is needed for displaying devcontainers in Remote Explorer.
+
+```jsonc
+{
+    // ...
+    "enable-proposed-api": [
+        // ...
+        "3timeslazy.vscodium-devpodcontainers"
+    ]
+}
+```
+
+Find the file you need to update with `Preferences: Configure Runtime Arguments` command.
+
+**Install the extension itself.**
+
+The extension is available on [Open VSX Marketplace](https://open-vsx.org/extension/3timeslazy/vscodium-devpodcontainers). Just type "DevPod Containers" in the extension tab and find the extension published by `3timeslazy`.
+
+Alternatively, you can download the .vsix file from either Open VSX or GitHub releases and run
+
+```sh
+$ code --install-extension /path/to/vsix
+```
+
+**Install [devpod](https://devpod.sh/docs/getting-started/install#optional-install-devpod-cli) command**
+
+**Make sure you have *ssh* command.**
+
+You can check whether the command exist by execution `which ssh` in the terminal.
+
+## Customizations
+
+The extensions support two customizations formats:
+- **vscode**. VS Code standard format
+- **vscodium**. Experimental format with additional features
+
+For comparison, that's how the **vscode** format looks like:
 
 ```jsonc
 {
@@ -46,7 +81,7 @@ For comparison, that's how the VS Code format looks like:
 }
 ```
 
-And that's the extensions's format:
+And that's an example of **vscodium** format:
 
 ```jsonc
 {
@@ -105,32 +140,6 @@ And that's the extensions's format:
 ```
 
 The key difference between the formats is that the extension gives developers more control and options in dealing with remote extensions. 
-
-## Install
-
-**First step is to enable the extension**. To do so, add the following into `argv.json`
-
-```jsonc
-{
-    // ...
-    "enable-proposed-api": [
-        // ...
-        "3timeslazy.vscodium-devpodcontainers"
-    ]
-}
-```
-
-which you can find by running the `Preferences: Configure Runtime Arguments` command.
-
-**The last step is to install it.**
-
-The extension is available on [Open VSX Marketplace](https://open-vsx.org/extension/3timeslazy/vscodium-devpodcontainers). Just type "DevPod Containers" in the extension tab and find the extension published by `3timeslazy`.
-
-Alternatively, you can download the .vsix file from either Open VSX or GitHub releases and run
-
-```sh
-$ code --install-extension /path/to/vsix
-```
 
 ## Dependencies
 
