@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.16
+
+- Better dialog when the devpod executable wasnt not found
+- Better quick pick for multi devcontainer.json repositories
+- Add placeholder to Show Workspaces command
+
 ## 0.0.15
 
 - Fixed broked vsix package
