@@ -84,16 +84,21 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "package": "pnpm run bundle && pnpm vsce package --no-dependencies",
-    "bundle": "esbuild --bundle --main-fields=module,main --minify --outfile=dist/extension.js --external:vscode --format=cjs --platform=node src/extension.ts"
+    "bundle": "esbuild --bundle --main-fields=module,main --minify --outfile=dist/extension.js --external:vscode --format=cjs --platform=node src/extension.ts",
+    "test:unit": "mocha --require ts-node/register --exit ./src/*.test.ts"
   },
   "devDependencies": {
-    "@types/node": "^20.16.5",
+    "@types/mocha": "^10.0.8",
+    "@types/node": "^22.7.2",
     "@types/vscode": "^1.80.0",
     "@types/which": "^3.0.4",
     "@vscode/vsce": "^3.1.0",
     "esbuild": "^0.24.0",
+    "mocha": "^10.7.3",
     "prettier": "3.3.3",
-    "typescript": "^5.6.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2",
+    "zod": "^3.23.8"
   },
   "dependencies": {
     "jsonc-parser": "^3.3.1",

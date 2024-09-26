@@ -1,12 +1,15 @@
 import { readFileSync } from "fs";
 import * as jsonc from "jsonc-parser";
+// import { z } from "zod";
 
 type DevContainerConfig = {
   customizations?: {
     vscode?: {
+      settings?: Record<string, any>,
       extensions?: string[];
     };
     vscodium?: {
+      settings?: Record<string, any>,
       registries?: Record<string, Registry>;
       extensions?: Record<string, Omit<Extension, "id">>;
     };
@@ -18,7 +21,8 @@ type Registry = {
   headers: Record<string, string>;
 };
 
-type Customizations = {
+export type Customizations = {
+  settings?: Record<string, any>,
   registries: Record<string, Registry>;
   extensions: Extension[];
 };
@@ -52,3 +56,33 @@ export function parseCustomizations(path: string): Customizations {
 
   return { extensions: [], registries: {} };
 }
+
+export function parseDevcontainerStr(file: string): Customizations | jsonc.ParseError[] {
+  const parseErrors: jsonc.ParseError[] = [];
+  const spec = jsonc.parse(file, parseErrors, { allowTrailingComma: true }) as DevContainerConfig;
+  if (parseErrors.length > 0) {
+    return parseErrors;
+  }
+
+  let customizations: Customizations = {
+    settings: {},
+    extensions: [],
+    registries: {},
+  };
+  const codium = spec.customizations?.vscodium;
+  const vscode = spec.customizations?.vscode;
+  if (codium) {
+    if (codium.extensions)
+      customizations.extensions = Object.entries(codium.extensions).map(([id, ext]) => ({ id, ...ext }))
+    customizations.registries = codium.registries || {};
+    customizations.settings = codium.settings;
+  }
+  if (vscode) {
+    // TODO: check extensions for their presence in openvsx?
+    customizations.extensions = vscode.extensions ? vscode.extensions.map(id => ({ id })) : [];
+    customizations.settings = vscode.settings;
+  }
+
+  return customizations;
+}
+
