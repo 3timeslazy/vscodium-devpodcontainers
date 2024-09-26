@@ -86,30 +86,13 @@ async function openContainer(recreate: boolean = false) {
     return;
   }
 
-  const picks = new Map<string, vscode.Uri>([]);
-  containerFiles.forEach(uri => {
-    const short = uri.path.replace(workspace.uri.path, "");
-    picks.set(short, uri);
-  });
-
-  let pick: vscode.Uri | undefined;
-  if (picks.size === 1) {
-    pick = [...picks.values()][0];
-  }
-  if (picks.size > 1) {
-    pick = await vscode.window.showQuickPick([...picks.keys()]).then(chosen => {
-      if (!chosen) {
-        return;
-      }
-      return picks.get(chosen);
-    });
-  }
-  if (!pick) {
+  const config = await pickConfig(workspace, containerFiles);
+  if (!config) {
     return;
   }
 
   await upDevpod({
-    configPath: pick.path.replace(workspace.uri.path, ""),
+    configPath: config.path.replace(workspace.uri.path, ""),
     workspaceFolder: workspace.uri.fsPath,
     recreate: recreate,
   });
@@ -123,7 +106,7 @@ async function openContainer(recreate: boolean = false) {
   }
   const devpodHost = `${devpod.id}.devpod`;
 
-  const customizations = parseCustomizations(pick.fsPath);
+  const customizations = parseCustomizations(config.fsPath);
   const exts = customizations.extensions;
   const installExtArgs = [];
   const registryExts = [];
@@ -161,6 +144,34 @@ async function openContainer(recreate: boolean = false) {
   await installCodeServer(devpodHost, installExtArgs);
 
   redirectToDevpod(devpod.id);
+}
+
+async function pickConfig(workspace: vscode.WorkspaceFolder, configs: vscode.Uri[]) {
+  const picks: Record<string, vscode.Uri> = {};
+  configs.forEach(config => {
+    const short = config.path.replace(workspace.uri.path, "");
+    picks[short] = config;
+  })
+  const picksLenght = Object.keys(picks).length;
+  if (picksLenght === 1) {
+    return Object.values(picks)[0];
+  }
+  if (picksLenght > 1) {
+    const options = Object.keys(picks)
+      .sort()
+      .map(pick => ({
+        label: /devcontainer\/(.+)\//.exec(pick)?.[1] as string,
+        description: pick,
+      }));
+    const pick = await vscode.window.showQuickPick(options, { placeHolder: "Select a devcontainer.json file" });
+    if (!pick) {
+      return;
+    }
+
+    return picks[pick.description];
+  }
+
+  return;
 }
 
 function redirectToDevpod(id: string) {
