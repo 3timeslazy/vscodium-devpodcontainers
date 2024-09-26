@@ -26,11 +26,10 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("vscodium-devpodcontainers.list", async () => {
       const devpods = await listDevpods();
-      vscode.window.showQuickPick(devpods.map(d => d.id)).then(id => {
-        if (id) {
-          redirectToDevpod(id);
-        }
-      });
+      const devpodId = await vscode.window.showQuickPick(devpods.map(d => d.id).sort(), { placeHolder: "Open workspace container" });
+      if (devpodId) {
+        redirectToDevpod(devpodId);
+      }
     }),
   );
 
