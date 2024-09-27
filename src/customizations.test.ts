@@ -101,6 +101,19 @@ describe("'customizations' format", () => {
                 expect: [{
                     id: "golang.Go"
                 }]
+            },
+            {
+                desc: "invalid type",
+                configFile: `
+                {
+                    "customizations": {
+                        "vscode": {
+                            "extensions": {}
+                        }
+                    }
+                }
+                `,
+                expect: "Invalid configuration at customizations.vscode.extensions: Expected array, received object"
             }
         ])
     })

@@ -56,7 +56,10 @@ export function parseCustomizations(configContent: string): Customizations | Err
   }
   const validated = DevContainerConfig.safeParse(parsed);
   if (validated.error) {
-    return validated.error;
+    const msg = "Invalid configuration at " +
+        validated.error.issues[0].path.join(".") + ": " +
+        validated.error.issues[0].message;
+    return new Error(msg);
   }
 
   const vscode = validated.data.customizations.vscode;
