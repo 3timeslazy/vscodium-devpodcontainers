@@ -5,7 +5,7 @@ import { installDevpod } from "./devpod";
 import { installCodeServer } from "./vscodium/server";
 import * as path from "path";
 import { DevpodTreeView } from "./treeView";
-import { parseCustomizations } from "./spec";
+import { parseCustomizationsFile } from "./customizations";
 import { downloadExtension, DOWNLOAD_EXTENSIONS_DIR } from "./marketplace";
 
 // TODO: not fail when open vsx in not available
@@ -89,6 +89,12 @@ async function openContainer(recreate: boolean = false) {
   if (!config) {
     return;
   }
+  
+  const customizations = parseCustomizationsFile(config.fsPath);
+  if (customizations instanceof Error) {
+    vscode.window.showErrorMessage(customizations.message);
+    return;
+  }
 
   await upDevpod({
     configPath: config.path.replace(workspace.uri.path, ""),
@@ -105,7 +111,6 @@ async function openContainer(recreate: boolean = false) {
   }
   const devpodHost = `${devpod.id}.devpod`;
 
-  const customizations = parseCustomizations(config.fsPath);
   const exts = customizations.extensions;
   const installExtArgs = [];
   const registryExts = [];

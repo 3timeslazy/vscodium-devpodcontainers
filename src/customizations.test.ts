@@ -17,6 +17,7 @@ function runTests<T, S = keyof Customizations>(key: S, testCases: TestCase<T>[])
             } else {
                 const full: any = {
                     settings: {},
+                    registries: {},
                     extensions: [],
                 };
                 full[key] = testCase.expect;
@@ -36,9 +37,14 @@ describe("'customizations' format", () => {
                 expect: {},
             },
             {
-                desc: "invalid jsonc format",
+                desc: "invalid jsonc format at root",
                 configFile: "}",
-                expect: "devcontainer.json must be a valid jsonc file",
+                expect: "Invalid jsonc at 'root': ValueExpected",
+            },
+            {
+                desc: "invalid jsonc format",
+                configFile: '{"customizations: {}}',
+                expect: "Invalid jsonc at 'customizations: {}}': UnexpectedEndOfString",
             },
             {
                 desc: "base types are supported",
@@ -73,11 +79,11 @@ describe("'customizations' format", () => {
             desc: `(vscode) ${tc.desc}`,
             configFile: tc.configFile.replaceAll("EDITOR", "vscode"),
         })));
-        // runTests(cases.map(tc => ({
-        //     ...tc,
-        //     desc: `(codium) ${tc.desc}`,
-        //     configFile: tc.configFile.replaceAll("EDITOR", "vscodium"),
-        // })));
+        runTests("settings", cases.map(tc => ({
+            ...tc,
+            desc: `(codium) ${tc.desc}`,
+            configFile: tc.configFile.replaceAll("EDITOR", "vscodium"),
+        })));
     });
 
     describe("vscode.extensions", () => {
@@ -103,6 +109,21 @@ describe("'customizations' format", () => {
                 }]
             },
             {
+                desc: "duplicate id",
+                configFile: `
+                {
+                    "customizations": {
+                        "vscode": {
+                            "extensions": ["golang.Go", "golang.Go"]
+                        }
+                    }
+                }
+                `,
+                expect: [{
+                    id: "golang.Go"
+                }]
+            },
+            {
                 desc: "invalid type",
                 configFile: `
                 {
@@ -114,6 +135,19 @@ describe("'customizations' format", () => {
                 }
                 `,
                 expect: "Invalid configuration at customizations.vscode.extensions: Expected array, received object"
+            },
+            {
+                desc: "extension id is not a string",
+                configFile: `
+                {
+                    "customizations": {
+                        "vscode": {
+                            "extensions": ["golang.Go", 1]
+                        }
+                    }
+                }
+                `,
+                expect: "Invalid configuration at customizations.vscode.extensions.1: Expected string, received number"
             }
         ])
     })
