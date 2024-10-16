@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.17
+
+- Minor UI improvements
+
 ## 0.0.16
 
 - Better dialog when the devpod executable wasnt not found
