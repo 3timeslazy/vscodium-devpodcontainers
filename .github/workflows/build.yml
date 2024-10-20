@@ -22,6 +22,9 @@ jobs:
           cache: 'pnpm'
 
       - run: pnpm install
+
+      - name: Check formatting with Prettier
+        run: pnpm prettier:check
       
       - id: package-vsix
         run: |
