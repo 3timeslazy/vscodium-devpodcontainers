@@ -84,7 +84,9 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "package": "pnpm run bundle && pnpm vsce package --no-dependencies",
-    "bundle": "esbuild --bundle --main-fields=module,main --minify --outfile=dist/extension.js --external:vscode --format=cjs --platform=node src/extension.ts"
+    "bundle": "esbuild --bundle --main-fields=module,main --minify --outfile=dist/extension.js --external:vscode --format=cjs --platform=node src/extension.ts",
+    "prettier:check": "prettier --check .",
+    "prettier:format": "prettier --write ."
   },
   "devDependencies": {
     "@types/node": "^20.16.5",
