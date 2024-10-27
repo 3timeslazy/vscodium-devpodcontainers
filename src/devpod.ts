@@ -4,7 +4,7 @@ export async function installDevpod() {
   const install = { title: "Open installation guide" };
   const explain = { title: "What is devpod?" };
   const answer = await vscode.window.showInformationMessage(
-    'DevPod couldn\'t be found on your machine, would you like to install it now?',
+    "DevPod couldn't be found on your machine, would you like to install it now?",
     install,
     explain,
   );

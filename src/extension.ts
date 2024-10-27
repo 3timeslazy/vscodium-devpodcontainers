@@ -30,7 +30,9 @@ export async function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage("No devpod workspaces found.");
         return;
       }
-      const devpodId = await vscode.window.showQuickPick(devpods.map(d => d.id).sort(), { placeHolder: "Open workspace container" });
+      const devpodId = await vscode.window.showQuickPick(devpods.map(d => d.id).sort(), {
+        placeHolder: "Open workspace container",
+      });
       if (devpodId) {
         redirectToDevpod(devpodId);
       }
@@ -154,7 +156,7 @@ async function pickConfig(workspace: vscode.WorkspaceFolder, configs: vscode.Uri
   configs.forEach(config => {
     const short = config.path.replace(workspace.uri.path, "");
     picks[short] = config;
-  })
+  });
   const picksLenght = Object.keys(picks).length;
   if (picksLenght === 1) {
     return Object.values(picks)[0];
@@ -166,7 +168,9 @@ async function pickConfig(workspace: vscode.WorkspaceFolder, configs: vscode.Uri
         label: /devcontainer\/(.+)\//.exec(pick)?.[1] as string,
         description: pick,
       }));
-    const pick = await vscode.window.showQuickPick(options, { placeHolder: "Select a devcontainer.json file" });
+    const pick = await vscode.window.showQuickPick(options, {
+      placeHolder: "Select a devcontainer.json file",
+    });
     if (!pick) {
       return;
     }
