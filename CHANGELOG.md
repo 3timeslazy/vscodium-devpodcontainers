@@ -48,7 +48,7 @@
 
 ## 0.0.6
 
-- Support for any container username 
+- Support for any container username
 - Better warning message
 
 ## 0.0.5

@@ -1,12 +1,10 @@
 {
-    "name": "DevContainer",
-    "build": {
-        "dockerfile": "./Dockerfile",
-        "context": ".."
-    },
-    "workspaceMount": "",
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-    "runArgs": [
-        "--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:Z"
-    ]
+  "name": "DevContainer",
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": ".."
+  },
+  "workspaceMount": "",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "runArgs": ["--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:Z"]
 }

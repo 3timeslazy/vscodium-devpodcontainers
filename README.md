@@ -25,16 +25,15 @@ https://github.com/user-attachments/assets/69f34f33-14e5-4bcd-a96e-8b069e1727ef
 
 ## Installation
 
-
 **Enable experimental API for the extension**. This is needed for displaying devcontainers in Remote Explorer.
 
 ```jsonc
 {
+  // ...
+  "enable-proposed-api": [
     // ...
-    "enable-proposed-api": [
-        // ...
-        "3timeslazy.vscodium-devpodcontainers"
-    ]
+    "3timeslazy.vscodium-devpodcontainers",
+  ],
 }
 ```
 
@@ -52,13 +51,14 @@ $ code --install-extension /path/to/vsix
 
 **Install [devpod](https://devpod.sh/docs/getting-started/install#optional-install-devpod-cli) command**
 
-**Make sure you have *ssh* command.**
+**Make sure you have _ssh_ command.**
 
 You can check whether the command exist by execution `which ssh` in the terminal.
 
 ## Customizations
 
 The extensions support two customizations formats:
+
 - **vscode**. VS Code standard format
 - **vscodium**. Experimental format with additional features
 
@@ -66,18 +66,15 @@ For comparison, that's how the **vscode** format looks like:
 
 ```jsonc
 {
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "go.useLanguageServer": true,
-                "go.gopath": "/go"
-            },
-            "extensions": [
-                "golang.Go",
-                "connor4312.esbuild-problem-matchers"
-            ]
-        }
-    }
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "go.useLanguageServer": true,
+        "go.gopath": "/go",
+      },
+      "extensions": ["golang.Go", "connor4312.esbuild-problem-matchers"],
+    },
+  },
 }
 ```
 
@@ -85,61 +82,61 @@ And that's an example of **vscodium** format:
 
 ```jsonc
 {
-    "customizations": {
-        "vscodium": {
-            // Settings are not yet supported
-            //
-            // "settings": {
-            //    "go.useLanguageServer": true,
-            //    "go.gopath": "/go"
-            // },
+  "customizations": {
+    "vscodium": {
+      // Settings are not yet supported
+      //
+      // "settings": {
+      //    "go.useLanguageServer": true,
+      //    "go.gopath": "/go"
+      // },
 
-            // Here you can define additional registries, which can later
-            // be referred in the "extensions" section.
-            // 
-            // OpenVSX here is just an example, if you use VS Codium
-            // without any product.json modifications, just skip this part.
-            // 
-            // This part is intended to be of use for enterprises and anyone with their private
-            // extensions registry. See: https://github.com/coder/code-marketplace
-            "registries": {
-                // Registry alias to be used in the "extensions" section.
-                "openvsx": {
-                    // Registry base url. Must be compatible with OpenVSX API.
-                    // See: https://github.com/eclipse/openvsx/wiki/Using-Open-VSX-in-VS-Code
-                    "url": "https://open-vsx.org/vscode/gallery",
+      // Here you can define additional registries, which can later
+      // be referred in the "extensions" section.
+      //
+      // OpenVSX here is just an example, if you use VS Codium
+      // without any product.json modifications, just skip this part.
+      //
+      // This part is intended to be of use for enterprises and anyone with their private
+      // extensions registry. See: https://github.com/coder/code-marketplace
+      "registries": {
+        // Registry alias to be used in the "extensions" section.
+        "openvsx": {
+          // Registry base url. Must be compatible with OpenVSX API.
+          // See: https://github.com/eclipse/openvsx/wiki/Using-Open-VSX-in-VS-Code
+          "url": "https://open-vsx.org/vscode/gallery",
 
-                    // Random headers you'd like to add to all registry requests.
-                    "headers": {
-                        "Accept": "application/json"
-                    }
-                }
+          // Random headers you'd like to add to all registry requests.
+          "headers": {
+            "Accept": "application/json",
+          },
+        },
 
-                // NOTE: Please, remember that putting Microsoft's Marketplace URL
-                // may be prohibited by its Terms of Use.
-                // See: https://cdn.vsassets.io/v/M190_20210811.1/_content/Microsoft-Visual-Studio-Marketplace-Terms-of-Use.pdf
-            },
+        // NOTE: Please, remember that putting Microsoft's Marketplace URL
+        // may be prohibited by its Terms of Use.
+        // See: https://cdn.vsassets.io/v/M190_20210811.1/_content/Microsoft-Visual-Studio-Marketplace-Terms-of-Use.pdf
+      },
 
-            // Extensions configuration
-            "extensions": {
-                // This extension will be downloaded from your editor's 
-                // default registry, which is OpenVSX for VS Codium and
-                // Visual Studio Marketplace for VS Code.
-                "golang.Go": {},
+      // Extensions configuration
+      "extensions": {
+        // This extension will be downloaded from your editor's
+        // default registry, which is OpenVSX for VS Codium and
+        // Visual Studio Marketplace for VS Code.
+        "golang.Go": {},
 
-                // If you wish, you can specify the desired registry and
-                // version for the extension.
-                "webben.browserslist": {
-                    "registry": "openvsx",
-                    "version": "11.0.0"
-                },
-            }
-        }
-    }
+        // If you wish, you can specify the desired registry and
+        // version for the extension.
+        "webben.browserslist": {
+          "registry": "openvsx",
+          "version": "11.0.0",
+        },
+      },
+    },
+  },
 }
 ```
 
-The key difference between the formats is that the extension gives developers more control and options in dealing with remote extensions. 
+The key difference between the formats is that the extension gives developers more control and options in dealing with remote extensions.
 
 ## Dependencies
 
@@ -154,7 +151,7 @@ Because Microsoft Devcontainer is a proprietary extension incompatible with VS C
 
 ### Why it is not on VS Code Marketplace?
 
-Because Microsoft is a VS Code gatekeeper and won't allow anyone to publish an extension if it uses [Proposed API](https://code.visualstudio.com/api/advanced-topics/using-proposed-api). [Except Microsoft and its "partners"](https://github.com/microsoft/vscode/issues/137744#issuecomment-989889396), of course. 
+Because Microsoft is a VS Code gatekeeper and won't allow anyone to publish an extension if it uses [Proposed API](https://code.visualstudio.com/api/advanced-topics/using-proposed-api). [Except Microsoft and its "partners"](https://github.com/microsoft/vscode/issues/137744#issuecomment-989889396), of course.
 
 Meanwhile, these API are the only way to implement an extension like [Open Remote SSH](https://github.com/jeanp413/open-remote-ssh) or Devcontainers.
 

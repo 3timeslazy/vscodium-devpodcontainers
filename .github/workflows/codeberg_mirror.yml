@@ -1,7 +1,7 @@
 name: Mirror to Codeberg
 on:
   push:
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
