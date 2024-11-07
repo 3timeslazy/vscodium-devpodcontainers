@@ -78,6 +78,19 @@
         "title": "Show Workspaces",
         "category": "DevPod Containers"
       }
+    ],
+    "configuration": [
+      {
+        "title": "Remote - DevPod Containers",
+        "properties": {
+          "remote.devpodcontainers.devpodCommand": {
+            "type": "string",
+            "description": "The command to use for running DevPod.",
+            "default": "devpod",
+            "scope": "machine-overridable"
+          }
+        }
+      }
     ]
   },
   "main": "./dist/extension.js",

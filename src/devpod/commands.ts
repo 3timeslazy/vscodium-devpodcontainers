@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { spawn, spawnSync } from "child_process";
+import { buildDevPodCommand } from "./bin";
 
 export async function upDevpod(args: {
   configPath: string;
@@ -22,7 +23,9 @@ export async function upDevpod(args: {
       cmdArgs.push("--recreate");
     }
 
-    const cp = spawn("devpod", cmdArgs);
+    let devPodCommand = buildDevPodCommand(cmdArgs);
+
+    const cp = spawn(devPodCommand.command, devPodCommand.args);
     cp.stdout.on("data", data => {
       cliOutput.append(data.toString());
     });
@@ -48,8 +51,10 @@ type Devpod = {
 };
 
 export async function listDevpods() {
+  let devPodCommand = buildDevPodCommand(["list", "--output", "json"]);
+
   return new Promise<Devpod[]>((resolve, reject) => {
-    const cp = spawn("devpod", ["list", "--output", "json"]);
+    const cp = spawn(devPodCommand.command, devPodCommand.args);
     let stdout = "";
     cp.stdout.on("data", data => {
       stdout += data;
