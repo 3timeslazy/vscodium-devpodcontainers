@@ -25,7 +25,7 @@ https://github.com/user-attachments/assets/69f34f33-14e5-4bcd-a96e-8b069e1727ef
 
 ## Installation
 
-**Enable experimental API for the extension**. This is needed for displaying devcontainers in Remote Explorer.
+**Enable experimental API for the extension**. This is needed for displaying devcontainers in Remote Explorer. Create or modify `.vscode/argv.json` with the following content in your project:
 
 ```jsonc
 {
@@ -57,7 +57,7 @@ You can check whether the command exist by execution `which ssh` in the terminal
 
 ## Customizations
 
-The extensions support two customizations formats:
+The extensions support two customizations formats, that you can add to `.devcontainers/devcontainer.json`:
 
 - **vscode**. VS Code standard format
 - **vscodium**. Experimental format with additional features
