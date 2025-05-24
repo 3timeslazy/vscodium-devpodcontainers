@@ -86,7 +86,7 @@ export async function installCodeServer(devpodAddr: string, extensionIds: string
         useSocketPath,
         serverApplicationName: vscodeServerConfig.serverApplicationName,
         serverDataFolderName: vscodeServerConfig.serverDataFolderName,
-        serverDownloadUrlTemplate: DEFAULT_DOWNLOAD_URL_TEMPLATE,
+        serverDownloadUrlTemplate: vscodeServerConfig.serverDownloadUrlTemplate || DEFAULT_DOWNLOAD_URL_TEMPLATE
     };
 
     let commandOutput: { stdout: string; stderr: string };
