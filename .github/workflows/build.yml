@@ -48,6 +48,7 @@ jobs:
         with:
           tag_name: v${{ needs.build.outputs.version }}
           files: vscodium-devpodcontainers-${{ needs.build.outputs.version }}.vsix
+          fail_on_unmatched_files: true
 
       - name: Publish to Open VSX Registry
         run: |
