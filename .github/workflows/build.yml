@@ -52,5 +52,5 @@ jobs:
       - name: Publish to Open VSX Registry
         run: |
           npx ovsx publish \
-            --packagePath vscodium-devpodcontainers-${{ needs.build.outputs.version }} \
+            --packagePath vscodium-devpodcontainers-${{ needs.build.outputs.version }}.vsix \
             --pat ${{ secrets.OPEN_VSX_TOKEN }}
