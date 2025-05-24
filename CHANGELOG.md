@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.18
+
+- Fixes vscodium unable to install the remote server
+
 ## 0.0.17
 
 - Minor UI improvements
